@@ -16,7 +16,7 @@ func ApplyAllTransformations(text string) string {
 	result := strings.Join(words, " ")
 
 	result = fixPunctuation(result)
-	result = fixQuotes(result)
+	result = fixQuotesProperly(result)
 
 	return result
 }
@@ -233,54 +233,6 @@ func cleanSpaces(text string) string {
 	return strings.Join(words, " ")
 }
 
-func fixQuotes(text string) string {
-
-	result := []rune(text)
-
-	for {
-		firstPos := -1
-		for i, ch := range result {
-			if ch == '\'' {
-				firstPos = i
-				break
-			}
-		}
-
-		if firstPos == -1 {
-			break
-		}
-
-		secondPos := -1
-		for i := firstPos + 1; i < len(result); i++ {
-			if result[i] == '\'' {
-				secondPos = i
-				break
-			}
-		}
-
-		if secondPos == -1 {
-			break
-		}
-
-		for firstPos+1 < len(result) && result[firstPos+1] == ' ' {
-			result = removeCharAt(result, firstPos+1)
-			secondPos--
-		}
-
-		for secondPos > 0 && result[secondPos-1] == ' ' {
-			result = removeCharAt(result, secondPos-1)
-			secondPos--
-		}
-
-		result[firstPos] = '\''
-		result[secondPos] = '\''
-
-		break
-	}
-
-	return fixQuotesProperly(text)
-}
-
 func fixQuotesProperly(text string) string {
 	runes := []rune(text)
 	n := len(runes)
@@ -319,16 +271,6 @@ func fixQuotesProperly(text string) string {
 	}
 
 	return result.String()
-}
-
-func removeCharAt(runes []rune, pos int) []rune {
-	newRunes := []rune{}
-	for i, ch := range runes {
-		if i != pos {
-			newRunes = append(newRunes, ch)
-		}
-	}
-	return newRunes
 }
 
 func isVowel(ch rune) bool {
