@@ -10,8 +10,8 @@ func ApplyAllTransformations(text string) string {
 	words := strings.Fields(text)
 
 	words = applyHexAndBin(words)
-	words = applyCaseTransformations(words)
 	words = applyAToAn(words)
+	words = applyCaseTransformations(words)
 
 	result := strings.Join(words, " ")
 
