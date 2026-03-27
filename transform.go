@@ -3,7 +3,6 @@ package main
 import (
 	"strconv"
 	"strings"
-	"unicode"
 )
 
 // The big boss — runs everything in the right order so nothing explodes.
@@ -284,13 +283,4 @@ func fixQuotesProperly(text string) string {
 	}
 
 	return result.String()
-}
-
-// Checks if a rune is a vowel. A, E, I, O, U — the famous five.
-func isVowel(ch rune) bool {
-	return unicode.ToLower(ch) == 'a' ||
-		unicode.ToLower(ch) == 'e' ||
-		unicode.ToLower(ch) == 'i' ||
-		unicode.ToLower(ch) == 'o' ||
-		unicode.ToLower(ch) == 'u'
 }
