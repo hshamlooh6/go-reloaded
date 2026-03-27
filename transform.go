@@ -6,6 +6,7 @@ import (
 	"unicode"
 )
 
+// The big boss — runs everything in the right order so nothing explodes.
 func ApplyAllTransformations(text string) string {
 	words := strings.Fields(text)
 
@@ -21,6 +22,7 @@ func ApplyAllTransformations(text string) string {
 	return result
 }
 
+// Converts hex and bin numbers to decimal, because humans don't speak binary (mostly).
 func applyHexAndBin(words []string) []string {
 	result := []string{}
 
@@ -55,6 +57,7 @@ func applyHexAndBin(words []string) []string {
 	return result
 }
 
+// Turns a hex string into a decimal. Yes, I could've used a calculator.
 func hexToDecimal(hex string) (string, error) {
 	number, err := strconv.ParseInt(hex, 16, 64)
 	if err != nil {
@@ -63,6 +66,7 @@ func hexToDecimal(hex string) (string, error) {
 	return strconv.FormatInt(number, 10), nil
 }
 
+// Turns a binary string into a decimal. 10 becomes 2. Magic.
 func binToDecimal(bin string) (string, error) {
 	number, err := strconv.ParseInt(bin, 2, 64)
 	if err != nil {
@@ -71,6 +75,7 @@ func binToDecimal(bin string) (string, error) {
 	return strconv.FormatInt(number, 10), nil
 }
 
+// Glues split markers back together when spaces got in where they shouldn't.
 func rejoinSplitMarkers(words []string) []string {
 	result := []string{}
 	i := 0
@@ -93,6 +98,7 @@ func rejoinSplitMarkers(words []string) []string {
 	return result
 }
 
+// Handles (up), (low), (cap) — gives words an identity crisis.
 func applyCaseTransformations(words []string) []string {
 	words = rejoinSplitMarkers(words)
 	result := []string{}
@@ -119,6 +125,7 @@ func applyCaseTransformations(words []string) []string {
 	return result
 }
 
+// Figures out what kind of case marker this is and how many words it bosses around.
 func parseCaseMarker(word string) (string, int) {
 	clean := strings.ReplaceAll(word, " ", "")
 	clean = strings.ToLower(clean)
@@ -151,6 +158,7 @@ func parseCaseMarker(word string) (string, int) {
 	return "", 0
 }
 
+// Transforms a word's case. No feelings were harmed in this process.
 func applyCase(word string, caseType string) string {
 	if caseType == "up" {
 		return strings.ToUpper(word)
@@ -167,6 +175,7 @@ func applyCase(word string, caseType string) string {
 	return word
 }
 
+// Swaps "a" for "an" before vowels and h — grammar police on duty.
 func applyAToAn(words []string) []string {
 	vowelsAndH := "aeiouAEIOUhH"
 
@@ -188,6 +197,7 @@ func applyAToAn(words []string) []string {
 	return words
 }
 
+// Makes sure punctuation hugs the word before it and waves at the word after.
 func fixPunctuation(text string) string {
 	var result strings.Builder
 
@@ -224,15 +234,18 @@ func fixPunctuation(text string) string {
 	return cleanSpaces(result.String())
 }
 
+// Returns true if the character is punctuation. Dot, comma, the usual suspects.
 func isPunctuation(ch rune) bool {
 	return ch == '.' || ch == ',' || ch == '!' || ch == '?' || ch == ':' || ch == ';'
 }
 
+// Collapses multiple spaces into one. Neatness matters.
 func cleanSpaces(text string) string {
 	words := strings.Fields(text)
 	return strings.Join(words, " ")
 }
 
+// Strips rogue spaces from inside single quotes so they actually look like quotes.
 func fixQuotesProperly(text string) string {
 	runes := []rune(text)
 	n := len(runes)
@@ -273,6 +286,7 @@ func fixQuotesProperly(text string) string {
 	return result.String()
 }
 
+// Checks if a rune is a vowel. A, E, I, O, U — the famous five.
 func isVowel(ch rune) bool {
 	return unicode.ToLower(ch) == 'a' ||
 		unicode.ToLower(ch) == 'e' ||
